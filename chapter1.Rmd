@@ -1,3 +1,3 @@
 
-## About the project. The Open Data Csience course will help me to familirize myself with the R and R studio software, as well as GitHub. To my mind, these are the essential software an economist should be able to operate with due to the facilitation of the working process. ## 
+## The Open Data Science course will help to familirize the student with the R and R studio software, as well as GitHub. This will facilitate the working or research process as the modern software knowledge will allow for the convenient storage and usage of data ## 
 #https://github.com/**YuliyaSkakun**/IODS-project #
