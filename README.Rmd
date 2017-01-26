@@ -1,10 +1,7 @@
----
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ## R Markdown
 
-The course will combine three big themes: Big Data, Open Science and Data Science. Each of the component will help to analyze how the data can be analyze, interpreted, transfered and coded so that the information utility is maximized  html_document
-https://github.com/**YuliyaSkakun**/IODS-project 
+The course will combine three big themes: Big Data, Open Science and Data Science. Each of the component will help to analyze how the data can be analyze, interpreted, transfered and coded so that the information utility is maximized 
+
+https://yuliyaskakun.github.io/IODS-project/
 
