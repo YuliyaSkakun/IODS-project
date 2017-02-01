@@ -119,41 +119,52 @@ $(document).ready(function () {
 </div>
 
 
-<div id="rexercise-2-analysis-of-the-regression-output" class="section level1">
-<h1>RExercise 2 Analysis of the regression output</h1>
-<p><em>Describe the work you have done this week and summarize your learning.</em></p>
-<p>setwd(“/Users/skakunyuliya/IODS-project/data”) learning2014 &lt;- read.csv(file=‘learning2014.csv’, header=TRUE, sep=“,”) learning2014</p>
+<div id="r-exercise-2" class="section level1">
+<h1>R Exercise 2</h1>
+<p><strong><em>Analysis of the regression output</em></strong></p>
+<p><strong>This week I have started to learn how to read and analyse the data in order to work on the further analysis of it (regression analysis) in order to figure out the ways or reasons for the specific pattern that can be observed in the data. Also, there was an emphasis on the graphical representation of the data as it is usually facilitate the process of data analysis. All in all, tools and techniques acquired this week will help me to work with the data.</strong></p>
 </div>
-<div id="task-2-in-the-alnalysis" class="section level1">
-<h1>Task 2 in the alnalysis</h1>
-</div>
-<div id="create-summary-of-the-variales" class="section level1">
-<h1>Create summary of the variales</h1>
+<div id="tasks-1-and-2-in-the-analysis" class="section level1">
+<h1>Tasks 1 and 2 in the analysis</h1>
+<p><em>Create summary of the variales</em></p>
+<p>setwd(“/Users/skakunyuliya/IODS-project/data”)</p>
+<p>learning2014 &lt;- read.csv(file=‘learning2014.csv’, header=TRUE, sep=“,”)</p>
 <p>summary(learning2014)</p>
-<p>library(ggplot2) # In this plot I will analyse the trend of what is the attitude of the students (depending on their gender) to their exam results # The regression line was added in order to be able to clearly see the trend and be able to compare attitude to points between genders. It is clearly seen that a positive correlation betwwen attitude and pounts which is logical as the higher the grade the more the person is dedicated to studying and the more he or she is reacting to the grades(show his/her attitude) p1 &lt;- ggplot(learning2014, aes(x = attitude, y = points, col=gender)) p1 p2 &lt;- p1+geom_point() p3 &lt;- p2 + geom_smooth(method = “lm”) p4 &lt;- p3+ggtitle(“Student’s attitude versus exam points”) p4</p>
-<p>install.packages(“GGally”) # Also I will analyse the relationship between variables by creating a scatterplot pairs(learning2014[-1], col=learning2014$gender) library(GGally) library(ggplot2) # In order to have a brighter picture of the interrelationships, I will create more colourfull graph with ggplot function p5 &lt;- ggpairs(learning2014, mapping = aes(col=gender), lower = list(combo = wrap(“facethist”, bins = 20))) p5 # Plots show that there</p>
+<p>library(ggplot2)</p>
+<p><em>In this plot I will analyse the trend of the attitude of students (depending on their gender) to their exam results.</em> p1 &lt;- ggplot(learning2014, aes(x = attitude, y = points, col=gender))</p>
+<p>p2 &lt;- p1+geom_point()</p>
+<p>p3 &lt;- p2 + geom_smooth(method = “lm”)</p>
+<p>p4 &lt;- p3+ggtitle(“Student’s attitude versus exam points”)</p>
+<p>p4</p>
+<p><strong>The regression line was added in order to be able to clearly see the trend and be able to compare attitude to points between genders. It is clearly seen that a positive correlation betwwen attitude and points which is logical. The higher the grade the more the person is dedicated to studying and the more he or she is reacting to the grades(show his/her attitude).</strong></p>
+<p>install.packages(“GGally”)</p>
+<p><em>Also I will analyse the relationship between variables by creating a scatterplot.</em></p>
+<p>pairs(learning2014[-1], col=learning2014$gender)</p>
+<p>library(GGally)</p>
+<p><strong>In order to have a brighter picture of the interrelationships, I will create more colourfull graph with ggplot function.</strong></p>
+<p>p5 &lt;- ggpairs(learning2014, mapping = aes(col=gender), lower = list(combo = wrap(“facethist”, bins = 20)))</p>
+<p>p5</p>
+<p><strong>Analysing the plot, we can come to the conclusion that majority of the people that were analysed are students of the age of 20. Less of the people that are more than 30 are analysed in this dataset. Therefore, the boxplot of the age variable is showing that the mean is around 20 and values that are higher are outliers.</strong></p>
+<p><strong>Also, one can clearly see the interrelation between the attitude and the points that the student is achieving. These are positively correlated. Points and age, as well as surf and points are negatively correlated. However, the correlation coefficient in all of the case are relatively low. One cannot say that there can be observed a clear link between points and explanatory variables.</strong> <strong>There is observed a clear link between attitude and points: the higher the attitude, the more responsible the student is, the higher the grade he or she will score.</strong> <strong>Another point, is that I cannot clearly state that there is any interrelationship between the points, attitude and type of question asked during the examination (deep, stra or surf). There are no specific characteristics that are pointing to the fact that males performing better that females or vice versa.</strong></p>
 </div>
 <div id="task-3-in-the-analysis" class="section level1">
 <h1>Task 3 in the analysis</h1>
-</div>
-<div id="create-a-regreesion" class="section level1">
-<h1>Create a regreesion</h1>
-<p>reg1 &lt;- lm(points ~ attitude + gender+ age, data = learning2014) summary(reg1) # The only variable that is statistacally significant at 1% level is the attitude. Therefore, one can say that in case attiutde of the student increases by 1, points will be more likely to increase by 0.33 #This result is inline with the p4 graph that was plotted and described previously # Explanatory variables gender and age are not statistically significant # Model explaine 20% of the variation in the data</p>
+<p><em>Create a regreesion.</em></p>
+<p>reg1 &lt;- lm(points ~ attitude + gender+ age, data = learning2014) summary(reg1)</p>
+<p><strong>The only variable that is statistacally significant at 1% level is the attitude. Therefore, one can say that in case attiutde of the student increases by 1, points will be more likely to increase by 0.33. This result is in line with the p4 graph that was plotted and described previously. Explanatory variables gender and age are not statistically significant. Model explaine 20% of the variation in the data.</strong></p>
 <p>reg2 &lt;- lm(points ~ attitude , data = learning2014)</p>
 </div>
 <div id="task-4-in-the-analysis" class="section level1">
 <h1>Task 4 in the analysis</h1>
-<p>summary(reg2) # Due to the elimination of the insignificant variables the attitude t-statically has slightly increased, as well as its estimate. Also, because variables had no impact on the points (dependent variable) the R-squared has decrease only by 1%. That is also indicating to the fact that eliminated variables had no effect on points.</p>
+<p>summary(reg2) <strong>Due to the elimination of the insignificant variables the attitude t-statically has slightly increased, as well as its estimate. Also, because variables had no impact on the points (dependent variable) the R-squared has decrease only by 1%. That is also indicating to the fact that eliminated variables had no effect on points. </strong></p>
 </div>
 <div id="task-5-in-the-analysis" class="section level1">
 <h1>Task 5 in the analysis</h1>
 <p>par(mfrow=c(2,2)) plot(reg2, c(1,2,5))</p>
-</div>
-<div id="as-the-analysed-model-includes-only-one-explanatory-variable-attitude-one-can-intuition-that-the-higher-the-attitude-of-the-person-to-studies-the-more-time-and-effort-he-or-she-is-spending-on-education.-thereofre-this-effect-will-defenitely-be-reflected-in-the-points-for-the-exam-or-test-examination-the-person-gets.-therefore-i-do-believe-that-between-these-variables-should-be-obsereved-a-clear-positive-relatioship." class="section level1">
-<h1>As the analysed model includes only one explanatory variable attitude, one can intuition that the higher the attitude of the person to studies, the more time and effort he or she is spending on education. Thereofre, this effect will defenitely be reflected in the points for the exam or test (examination) the person gets. Therefore, I do believe that between these variables should be obsereved a clear positive relatioship.</h1>
-</div>
-<div id="diagnosis-plots-are-showing-that" class="section level1">
-<h1>Diagnosis plots are showing that</h1>
+<p><strong>As the analysed model includes only one explanatory variable - attitude, one can intuition that the higher the attitude of the person to studies, the more time and effort he or she is spending on education. Therefore, this effect will defenitely be reflected in the points for the exam or test the person gets. Therefore, I do believe that between these variables should be obsereved a clear positive relation.</strong></p>
+<p><strong>Residual vs.fitted values are showinng that in general the model tries to explain the variatoon in the depent varible. However, there are a lot of observations that are not capturing this. Therefore, one can conclude that there is a need to add additional variables in order to be ables to better explain the model (by minimising the distance of the squared residuals).</strong></p>
+<p><strong>Normality plot is showing that the data is to the biggest extend follows the normal distribution. However, additional tests can be performed in order to prove it statistically.</strong></p>
+<p><strong>Residual vs Leverage graph is showing that there is none of the variables that are the key in the explanation of the effect of points received by students. This is due to the fact that Cook’s distance is barely seen in the graph.</strong></p>
 </div>
 
 
