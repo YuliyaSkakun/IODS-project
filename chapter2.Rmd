@@ -17,6 +17,7 @@ summary(learning2014)
 library(ggplot2)
 
 *In this plot I will analyse the trend of the attitude of students (depending on their gender) to their exam results.*
+
 p1 <- ggplot(learning2014, aes(x = attitude, y = points, col=gender))
 
 p2 <- p1+geom_point()
@@ -27,7 +28,7 @@ p4 <- p3+ggtitle("Student's attitude versus exam points")
 
 p4
 
-**The regression line was added in order to be able to clearly see the trend and be able to compare attitude to points between genders. It is clearly seen that a positive correlation betwwen attitude and points which is logical. The higher the grade the more the person is dedicated to studying and the more he or she is reacting to the grades(show his/her attitude).**
+**The regression line was added in order to be able to clearly see the trend and be able to compare attitude to points between genders. It is clearly seen that a positive correlation between attitude and points which is logical. The higher the grade the more the person is dedicated to studying and the more he or she is reacting to the grades (show his/her attitude).**
 
 
 install.packages("GGally")
@@ -38,18 +39,18 @@ pairs(learning2014[-1], col=learning2014$gender)
 
 library(GGally)
 
-**In order to have a brighter picture of the interrelationships, I will create more colourfull graph with ggplot function.**
+**In order to have a brighter picture of the interrelationships, I will create more colourfull graph using ggplot function.**
 
 p5 <- ggpairs(learning2014, mapping = aes(col=gender), lower = list(combo = wrap("facethist", bins = 20)))
 
 p5
 
 
-**Analysing the plot, we can come to the conclusion that majority of the people that were analysed are students of the age of 20. Less of the people that are more than 30 are analysed in this dataset. Therefore, the boxplot of the age variable is showing that the mean is around 20 and values that are higher are outliers.** 
+**Analysing the plot, we can come to the conclusion that majority of people that were analysed are students of the age of 20. Less of the people that are more than 30 are analysed in this dataset. Therefore, the boxplot of the age variable is showing that the mean is around 20 and values that are higher are outliers.** 
 
-**Also, one can clearly see the interrelation between the attitude and the points that the student is achieving. These are positively correlated. Points and age, as well as surf and points are negatively correlated. However, the correlation coefficient in all of the case are relatively low. One cannot say that there can be observed a clear link between points and explanatory variables.** 
+**Also, one can clearly see the interrelation between attitude and points that the student is achieving. These are positively correlated. Points and age, as well as surf and points are negatively correlated. However, the correlation coefficient in all of the case are relatively low. One cannot say that there can be observed a clear link between points and explanatory variables.** 
 **There is observed a clear link between attitude and points: the higher the attitude, the more responsible the student is, the higher the grade he or she will score.**
-**Another point, is that I cannot clearly state that there is any interrelationship between the points, attitude and type of question asked during the examination (deep, stra or surf). There are no specific characteristics that are pointing to the fact that males performing better that females or vice versa.**
+**Another point, is that I cannot clearly state that there is any interrelationship between points, attitude and type of question asked during the examination (deep, stra or surf). There are no specific characteristics that are pointing to the fact that males perform better that females or vice versa.**
 
 
 # Task 3 in the analysis 
@@ -58,13 +59,14 @@ p5
 reg1 <- lm(points ~ attitude + gender+ age, data = learning2014)
 summary(reg1)
 
-**The only variable that is statistacally significant at 1% level is the attitude. Therefore, one can say that in case attiutde of the student increases by 1, points will be more likely to increase by 0.33. This result is in line with the p4 graph that was plotted and described previously. Explanatory variables gender and age are not statistically significant. Model explaine 20% of the variation in the data.**
+**The only variable that is statistacally significant at 1% level is the attitude. Therefore, one can say that in case attitude of the student increases by 1, points will be more likely to increase by 0.33. This result is in line with the p4 graph that was plotted and described previously. Explanatory variables gender and age are not statistically significant. Model explaines 20% of the variation in the dependent variable.**
 
 reg2 <- lm(points ~ attitude , data = learning2014)
 
 #Task 4 in the analysis
 
 summary(reg2)
+
 **Due to the elimination of the insignificant variables the attitude t-statically has slightly increased, as well as its estimate. Also, because variables had no impact on the points (dependent variable) the R-squared has decrease only by 1%. That is also indicating to the fact that eliminated variables had no effect on points. **
 
 
