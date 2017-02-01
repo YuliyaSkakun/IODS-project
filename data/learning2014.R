@@ -1,5 +1,6 @@
 lrn14 <- read.table("http://www.helsinki.fi/~kvehkala/JYTmooc/JYTOPKYS3-data.txt ", sep="\t", header=TRUE)
 #Data contains 183 observations and 60 variables
+
 dim(lrn14)
 
 #Structure shows how the data actually look 
@@ -24,15 +25,15 @@ strategic_questions <- c("ST01","ST09","ST17","ST25","ST04","ST12","ST20","ST28"
 strategic_columns <- select(lrn14, one_of(strategic_questions))
 lrn14$stra <- rowMeans(strategic_columns)
 
+
 lrn1 <- filter(lrn14, Points!=0)
 learning2014 <- select(lrn1, one_of("gender", "Age", "Attitude", "deep", "stra", "surf", "Points"))
 learning2014
-colnames(lrn14)[2] <- "age"
-colnames(lrn14)[3] <- "attitude"
-colnames(lrn14)[7] <- "points"
-learning2014
-learning2014 <-filter(learning2014 , points>1)
+colnames(learning2014)[2] <- "age"
+colnames(learning2014)[3] <- "attitude"
+colnames(learning2014)[7] <- "points"
+print(learning2014)
 str(learning2014)
 setwd("/Users/skakunyuliya/IODS-project/data")
-write.csv(file="learning2014","/Users/skakunyuliya/IODS-project/data")
-read.csv(file='learning2014', header=TRUE)
+write.csv(learning2014, file="learning2014.csv", row.names = FALSE)
+read.csv(file='learning2014.csv', header=TRUE, sep=",")

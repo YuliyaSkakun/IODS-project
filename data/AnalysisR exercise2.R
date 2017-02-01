@@ -1,7 +1,3 @@
-# RExercise 2 Analysis of the regression output
-
-*Describe the work you have done this week and summarize your learning.*
-
 setwd("/Users/skakunyuliya/IODS-project/data")
 learning2014 <- read.csv(file='learning2014.csv', header=TRUE, sep=",")
 learning2014
