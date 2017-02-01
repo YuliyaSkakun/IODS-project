@@ -36,7 +36,6 @@ p3 <- p2 + geom_smooth(method = "lm")
 
 p4 <- p3+ggtitle("Student's attitude versus exam points")
 
-
 p4
 ```
 
