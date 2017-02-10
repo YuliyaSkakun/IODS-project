@@ -146,6 +146,9 @@ $(document).ready(function () {
 <li><a href="#task-3-in-the-analysis">Task 3 in the analysis</a></li>
 <li><a href="#task-4-in-the-analysis">Task 4 in the analysis</a></li>
 <li><a href="#task-5-in-the-analysis">Task 5 in the analysis</a></li>
+<li><a href="#r-exercise-2-1">R Exercise 2</a></li>
+<li><a href="#question2">Question2</a></li>
+<li><a href="#question-3.-choose-three-variables">Question 3. Choose three variables</a></li>
 </ul>
 </div>
 
@@ -245,6 +248,28 @@ $(document).ready(function () {
 <p><strong>Residual vs.fitted values are showinng that in general the model tries to explain the variatoon in the depent varible. However, there are a lot of observations that are not capturing this. Therefore, one can conclude that there is a need to add additional variables in order to be ables to better explain the model (by minimising the distance of the squared residuals).</strong></p>
 <p><strong>Normality plot is showing that the data is to the biggest extend follows the normal distribution. However, additional tests can be performed in order to prove it statistically.</strong></p>
 <p><strong>Residual vs Leverage graph is showing that there is none of the variables that are the key in the explanation of the effect of points received by students. This is due to the fact that Cook’s distance is barely seen in the graph.</strong></p>
+<hr />
+</div>
+<div id="r-exercise-2-1" class="section level1">
+<h1>R Exercise 2</h1>
+<p>setwd(“/Users/skakunyuliya/IODS-project/data”) alc &lt;-read.csv(“write.csv”,sep=“,”,header=TRUE)</p>
+</div>
+<div id="question2" class="section level1">
+<h1>Question2</h1>
+<p><em>Describe the data</em></p>
+<pre><code>##  [1] &quot;school&quot;     &quot;sex&quot;        &quot;age&quot;        &quot;address&quot;    &quot;famsize&quot;   
+##  [6] &quot;Pstatus&quot;    &quot;Medu&quot;       &quot;Fedu&quot;       &quot;Mjob&quot;       &quot;Fjob&quot;      
+## [11] &quot;reason&quot;     &quot;nursery&quot;    &quot;internet&quot;   &quot;guardian&quot;   &quot;traveltime&quot;
+## [16] &quot;studytime&quot;  &quot;failures&quot;   &quot;schoolsup&quot;  &quot;famsup&quot;     &quot;paid&quot;      
+## [21] &quot;activities&quot; &quot;higher&quot;     &quot;romantic&quot;   &quot;famrel&quot;     &quot;freetime&quot;  
+## [26] &quot;goout&quot;      &quot;Dalc&quot;       &quot;Walc&quot;       &quot;health&quot;     &quot;absences&quot;  
+## [31] &quot;G1&quot;         &quot;G2&quot;         &quot;G3&quot;         &quot;alc_use&quot;    &quot;high_use&quot;</code></pre>
+</div>
+<div id="question-3.-choose-three-variables" class="section level1">
+<h1>Question 3. Choose three variables</h1>
+<ul>
+<li>studytime- weekly study time (numeric: 1 - &lt;2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - &gt;10 hours) absences - number of school absences (numeric: from 0 to 93) romantic-with romantic rela(yes/no) famsup-family education support*</li>
+</ul>
 <hr />
 </div>
 

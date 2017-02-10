@@ -1,0 +1,413 @@
+# R Exercise 3. Logistic Regression Analysis
+
+
+
+*The data on the acohol consumption contains 382 observations of students that are taking math and Portugese courses. There are 35 main variables (binary, nominal and numeric ones) that can have some explanatory power on the main question of the analysis: what are the factors that affect the high alcohol consumption among students?. These are the general information about the student such as age, sex, amount of time they study, have freetime, whether student are in the romantic relationship, etc. Also, there are some information on the family such as family size or whether the child is receiving the family support. I do believe that these are the factors that may affect the behaviour of the student and respectivelly his or her attitude towards alcohol.*
+
+
+* As the data contains the binary variables, I will apply the logistic regression this week*
+
+``` {r, echo=FALSE}
+#read the csv and discover the data
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+
+colnames(alc)
+```
+
+
+
+* Therefore, based on the observed list of the variables, I think that sex may be one of those that can be affecting the acohol consumption. I do believe that it may be the case that males may have higher alcohol consumption that females*
+
+*Another variable of high interest to me is the amount of studytime. I assume that the alcohol consumpton and amount of hours the student dedicate to studying are negatively correlated. This may be due to the fact that the student may not have simply enough time to hang out with friends and drink too much. Also, this may account for the fact the these kinds of students are more self-consious. They may treat too much drinking as somethinhg that negatively affects their productivity and health. Therefore, they may tend to obstain from that*
+
+*Also, another variable of interest is the romantic relationship. I do believe that those people in relationship are more self-consious and therefore less addicted to alcohol*
+
+*Another fact that may affect the high alcohol consumption is the number of absences. It may be obvious that these two are correlated as the more time the person is absent from classes the more he or she may be discouraged from studies. Respectively, the less time he or she will be dedicating to studies.*
+
+
+
+
+
+**Based on my intuition behind the possible effect the variables can have on alcohol consumption, I will create couple of plots in order to confirm my thoughts**
+
+
+
+
+
+*The following boxplot is showing how the distribution of the studytime. It is showing that females that do not consume a lot of alcohol tend to study more - 2-3 hours, in general. For males, it is 1-2 hours. However, the mean value is equal for both group.*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+library(tidyr); library(dplyr); library(ggplot2)
+
+#Build boxplot
+g1 <- ggplot(alc, aes(x=high_use, y=studytime, col=sex))
+g1+geom_boxplot()
+
+```
+
+*The following bar show that those who spend 1-2 hours on studies tend to have higher alcohol consumption.*
+
+``` {r, echo=FALSE}
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+library(tidyr); library(dplyr); library(ggplot2)
+
+#Build bar
+ggplot(alc, aes(studytime, fill=high_use)) + geom_bar(position="dodge") + ggtitle("Alcohol Consumption and Studytime") + xlab("How many hours do you study?")  
+
+```
+
+
+*However, when one considers romaic relationship, one can see a clear pattern: the fact tht the person is in relationship lowers the number of thsoe who have high alcohol consumption.* 
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+library(tidyr); library(dplyr); library(ggplot2)
+
+#Build bar
+ggplot(alc, aes(romantic, fill=high_use)) + geom_bar(position="dodge") + ggtitle("Alcohol Consumption and Romantic Relationship")+ xlab("Free time") 
+  
+
+```
+
+*The tabulation proves the fact the males tend to have higer alocohol consumption that females*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+library(tidyr); library(dplyr); library(ggplot2)
+
+#Build tabulation
+alc %>% group_by(sex, high_use) %>% summarise(count = n())
+
+```
+
+*The following bar is quite controversial result to my mind: the less classes are skipped, the more the person tend to drink alcohol. The only explanation is that big number of classes causes stress that has to be relieved with alcohol.*
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+library(tidyr); library(dplyr); library(ggplot2)
+
+#Build bar
+ggplot(alc, aes(absences, fill=high_use)) + geom_bar(position="dodge") + ggtitle("Alcohol Consumption and Absences")+ xlab("How many absences do you have?") 
+
+```
+
+*In genral, there are less of those who do have a high number of alcohol consumption*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+library(tidyr); library(dplyr); library(ggplot2)
+
+#Build bar
+
+join_by <- c("high_use")
+plot1 <- select(alc, one_of(join_by))
+glimpse(plot1)
+
+gather(plot1) %>% glimpse
+
+gather(plot1) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free")+geom_bar()
+
+```
+
+
+
+**Logistic Regression**
+
+
+*In order to be able to interpret and analyse the interelationships, I will perform a regression analysis.*
+
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+
+#Perform logistic regresion and show the summary of the output. seperately show only coefficients
+m <- glm(formula = high_use ~ romantic+ absences + sex + studytime, family = "binomial", data = alc)
+summary(m)
+
+coef(m)
+```
+
+
+
+* The results are showing that romantic variable is not significant. Absences significant at the 1% level, sex at 5% level and studytime at 10% significance level*
+
+*The results are suggesting that in the case you study by one more hour, the alcohol consumption will drop by 39%. That is a huge positive effect on the alcohol consumption*
+
+*The increase in the number of absences will lead to the increase in the alcohol consumption by 9%*
+
+*However, in order to have a better understanding of the variables, I will find the odds ratio*
+
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+
+#Create OR and CI 
+OR <- coef(m) %>% exp
+CI <- confint(m) %>% exp
+
+cbind(OR, CI)
+
+```
+* The results of the odd ratio is confirming the interpretation of the regression output results where only studytime had negative effect on alcohol consumption; while the other variables - positive.*
+
+
+
+
+
+**Another point that has to be analysed is the predictive power of the model.**
+
+
+*Therefore, as my model has insignificant variable - romantic, I will eliminate it and afterwards compute the confusion matrix and the respective probabilities.*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+
+#Perform loistic regreesion and show the summary of the output. 
+colnames(alc)
+m1 <- glm(formula = high_use ~ absences + sex + studytime, family = "binomial", data = alc)
+summary(m1)
+
+```
+* The results of the new model shows that significance is not changed, however, the coefficients' values are slightly changed.*
+
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+#Calculate predicted probability, table and plot them
+probabilities <- predict(m1, type = "response")
+
+alc <- mutate(alc, probability = probabilities)
+
+alc <- mutate(alc, prediction = probability>0.5)
+
+table(high_use=alc$high_use,prediction=alc$prediction)
+
+
+table(high_use = alc$high_use, prediction = alc$prediction) %>% prop.table() %>% addmargins()
+```
+
+
+*The confusion matrix is showing that there are 258 true negatives, 10 true positives, 88 false negatives and 26 false positives. Tabulating the result and calculating probabilities shows that there are 67% of true negative, 2.6% of true positives, 23% of false negatives and 6.8% of false positives.*
+
+
+*The result is also showed graphically.*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+library(ggplot2)
+
+probabilities <- predict(m1, type = "response")
+
+alc <- mutate(alc, probability = probabilities)
+
+alc <- mutate(alc, prediction = probability>0.5)
+
+#Show the results grphically
+g <- ggplot(alc, aes(x =probability , y = high_use, col=prediction ))
+g+geom_point()
+
+```
+
+
+
+*The graph is showing that according to the odds ratio there is approximately 50% change of the values of beign negative and 50% of them being positive. Therefore it cannot be reliable.*
+
+*Additionally, I would like to perfom a 10-K cross validation*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+
+probabilities <- predict(m1, type = "response")
+
+alc <- mutate(alc, probability = probabilities)
+
+alc <- mutate(alc, prediction = probability>0.5)
+
+# define a loss function 
+loss_func <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+loss_func(class = alc$high_use, prob = alc$probability)
+
+#Find cross- validation
+
+library(boot)
+cv <- cv.glm(data = alc, cost = loss_func, glmfit = m, K = 10)
+
+# average number of wrong predictions in the cross validation
+cv$delta[1]
+
+```
+
+*My model is showing that on average there are 26% of prediction that are wrong. That is the same value as in the DataCamp model.*
+
+**Therefore, I will perform a set of logistic regression in order to analyse the 10-K cross validation**
+
+*First of all, I will include most of the variable in the model*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+
+
+m2 <- glm(high_use ~ famsup + absences+ studytime + sex + age + address + famsize + higher + traveltime + freetime, data = alc, family = "binomial")
+summary(m2)
+
+probabilities <- predict(m2, type = "response")
+
+alc <- mutate(alc, probability = probabilities)
+
+alc <- mutate(alc, prediction = probability>0.5)
+
+#Compute the training error
+# define a loss function (mean prediction error)
+loss_func2 <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+# call loss_func to compute the average number of wrong predictions in the (training) data
+loss_func2(class = alc$high_use, prob = alc$probability)
+# K-fold cross-validation
+library(boot)
+cv2 <- cv.glm(data = alc, cost = loss_func2, glmfit = m, K = 10)
+
+# average number of wrong predictions in the cross validation
+cv2$delta[1]
+
+```
+
+* The avarega probability of wrong predictions is 25% in this model. I will exclude insignificant variables from the model*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+
+m3 <- glm(high_use ~ famsup + absences+ studytime + sex + age + address + famsize  + freetime, data = alc, family = "binomial")
+summary(m3)
+
+probabilities <- predict(m3, type = "response")
+
+alc <- mutate(alc, probability = probabilities)
+
+alc <- mutate(alc, prediction = probability>0.5)
+
+
+#Compute the training error
+# define a loss function (mean prediction error)
+loss_func3 <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+# call loss_func to compute the average number of wrong predictions in the (training) data
+loss_func3(class = alc$high_use, prob = alc$probability)
+
+library(boot)
+cv3 <- cv.glm(data = alc, cost = loss_func3, glmfit = m, K = 10)
+
+# average number of wrong predictions in the cross validation
+cv3$delta[1]
+```
+
+*The elimination of the insignificant variables have decrease the wrong prediction probability. However, there are still some insignificant variables left*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+
+
+m4 <- glm(high_use ~ famsup + absences+ studytime + sex + address  + freetime, data = alc, family = "binomial")
+summary(m4)
+
+
+probabilities <- predict(m4, type = "response")
+
+alc <- mutate(alc, probability = probabilities)
+
+alc <- mutate(alc, prediction = probability>0.5)
+
+#Compute the training error
+# define a loss function (mean prediction error)
+loss_func4 <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+# call loss_func to compute the average number of wrong predictions in the (training) data
+loss_func4(class = alc$high_use, prob = alc$probability)
+
+library(boot)
+cv4 <- cv.glm(data = alc, cost = loss_func4, glmfit = m, K = 10)
+
+# average number of wrong predictions in the cross validation
+cv4$delta[1]
+```
+
+*The more variables eliminated, the hight the probability of the error*
+
+``` {r, echo=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+alc <-read.csv("write.csv",sep=",",header=TRUE)
+
+
+m5 <- glm(high_use ~ + absences+ studytime + sex + freetime, data = alc, family = "binomial")
+summary(m5)
+
+
+probabilities <- predict(m5, type = "response")
+
+alc <- mutate(alc, probability = probabilities)
+
+alc <- mutate(alc, prediction = probability>0.5)
+
+#Compute the training error
+# define a loss function (mean prediction error)
+loss_func5 <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+# call loss_func to compute the average number of wrong predictions in the (training) data
+loss_func5(class = alc$high_use, prob = alc$probability)
+
+library(boot)
+cv5 <- cv.glm(data = alc, cost = loss_func5, glmfit = m, K = 10)
+
+# average number of wrong predictions in the cross validation
+cv5$delta[1]
+```
+
+*Therefore, the elimination of the variables have led to the increase in the probability of error.*
+
+
