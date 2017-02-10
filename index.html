@@ -391,7 +391,7 @@ $(document).ready(function () {
 <p><em>The graph is showing that according to the odds ratio there is approximately 50% change of the values of beign negative and 50% of them being positive. Therefore it cannot be reliable.</em></p>
 <p><em>Additionally, I would like to perfom a 10-K cross validation</em></p>
 <pre><code>## [1] 0.2565445</code></pre>
-<pre><code>## [1] 0.2591623</code></pre>
+<pre><code>## [1] 0.2643979</code></pre>
 <p><em>My model is showing that on average there are 26% of prediction that are wrong. That is the same value as in the DataCamp model.</em></p>
 <p><strong>Therefore, I will perform a set of logistic regression in order to analyse the 10-K cross validation</strong></p>
 <p><em>First of all, I will include most of the variable in the model</em></p>
@@ -429,7 +429,7 @@ $(document).ready(function () {
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <pre><code>## [1] 0.2591623</code></pre>
-<pre><code>## [1] 0.2565445</code></pre>
+<pre><code>## [1] 0.2696335</code></pre>
 <ul>
 <li>The avarega probability of wrong predictions is 25% in this model. I will exclude insignificant variables from the model*</li>
 </ul>
@@ -465,7 +465,7 @@ $(document).ready(function () {
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <pre><code>## [1] 0.2643979</code></pre>
-<pre><code>## [1] 0.2696335</code></pre>
+<pre><code>## [1] 0.2643979</code></pre>
 <p><em>The elimination of the insignificant variables have decrease the wrong prediction probability. However, there are still some insignificant variables left</em></p>
 <pre><code>## 
 ## Call:
@@ -496,7 +496,7 @@ $(document).ready(function () {
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <pre><code>## [1] 0.2617801</code></pre>
-<pre><code>## [1] 0.2696335</code></pre>
+<pre><code>## [1] 0.2722513</code></pre>
 <p><em>The more variables eliminated, the hight the probability of the error</em></p>
 <pre><code>## 
 ## Call:
