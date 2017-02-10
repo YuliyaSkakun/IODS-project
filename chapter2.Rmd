@@ -5,7 +5,8 @@
 
 
 
-# Tasks 1 and 2 in the analysis
+**Tasks 1 and 2 in the analysis**
+
 *Create summary of the variales*
 
 ``` {r, echo=FALSE}
@@ -80,7 +81,7 @@ p5
 **Another point, is that I cannot clearly state that there is any interrelationship between points, attitude and type of question asked during the examination (deep, stra or surf). There are no specific characteristics that are pointing to the fact that males perform better that females or vice versa.**
 
 
-# Task 3 in the analysis 
+**Task 3 in the analysis** 
 *Create a regreesion.*
 
 reg1 <- lm(points ~ attitude + gender+ age, data = learning2014)
@@ -100,7 +101,7 @@ summary(reg1)
 
 reg2 <- lm(points ~ attitude , data = learning2014)
 
-#Task 4 in the analysis
+**Task 4 in the analysis**
 
 ``` {r, echo=FALSE}
 
@@ -117,7 +118,7 @@ summary(reg2)
 **Due to the elimination of the insignificant variables the attitude t-statically has slightly increased, as well as its estimate. Also, because variables had no impact on the points (dependent variable) the R-squared has decrease only by 1%. That is also indicating to the fact that eliminated variables had no effect on points. **
 
 
-# Task 5 in the analysis
+**Task 5 in the analysis**
 
 ``` {r, echo=FALSE}
 
