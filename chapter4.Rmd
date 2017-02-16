@@ -1,4 +1,4 @@
-
+# R Exercise 4. Clustering and classification
 
 *I have loaded the Boston dataset that contains information on housing values in suburbs of Boston. Data has 5-6 observation and 14 differeent variables like crime rate of the twon, number of rooms in dwelling,pupil-teacher ration, proportion of lower status population, etc. All these variables are the key that help to eveluate the value of the houses in this area.*
 
