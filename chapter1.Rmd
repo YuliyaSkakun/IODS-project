@@ -1,6 +1,6 @@
+#R Exercise 1
 
-
-The Open Data Science course will help to familirize the student with the R and R studio software, as well as GitHub. This will facilitate the working or research process as the modern software knowledge will allow for the convenient storage and usage of data.
+**The Open Data Science course will help to familirize the student with the R and R studio software, as well as GitHub. This will facilitate the working or research process as the modern software knowledge will allow for the convenient storage and usage of data.**
 =======
 
-https://github.com/YuliyaSkakun/IODS-project 
+*https://github.com/YuliyaSkakun/IODS-project*
