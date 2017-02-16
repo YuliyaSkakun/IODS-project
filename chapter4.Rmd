@@ -137,7 +137,6 @@ lda.arrows(lda.fit, myscale = 2)
 
 
 *In order to see the full picture of the obtained results, I have plotted a graph where different colours are resposible for different clsses of the variables. The arrow indicates the impact of each of the predictor variable in the model.*
-*The graph shows that biggest impact the radical hihways (blue) and high crime rates.*
 
 
 
@@ -257,7 +256,7 @@ plot_ly(x = matrix_product$LD1, y = matrix_product$LD2, z = matrix_product$LD3, 
 ```
 
 
-*Also, here is another 3D plot where the color is defined by the clusters of the k-mean. It shos the same classes as in LDA model.*
+*Also, here is another 3D plot where the color is defined by the clusters of the k-mean. It shows the same classes as in LDA model, howver, eithout classification by the crime rate.*
 
 
 ``` {r, echo=FALSE}
