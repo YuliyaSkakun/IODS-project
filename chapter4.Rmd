@@ -1,6 +1,9 @@
 # R Exercise 4. Clustering and classification
 
-*I have loaded the Boston dataset that contains information on housing values in suburbs of Boston. Data has 5-6 observation and 14 differeent variables like crime rate of the twon, number of rooms in dwelling,pupil-teacher ration, proportion of lower status population, etc. All these variables are the key that help to eveluate the value of the houses in this area.*
+
+*I have loaded the Boston dataset that contains information on housing values in suburbs of Boston. Data has 506 observations and 14 differeent variables like crime rate of the town, number of rooms in dwelling, pupil-teacher ratio, proportion of the lower status population, etc. All these variables are the key that help to eveluate the value of the houses in this area.*
+
+
 
 ``` {r, echo=FALSE}
 library(MASS)
@@ -8,7 +11,11 @@ data("Boston")
 str(Boston)
 dim(Boston)
 ```
-*The graphical repreentation of the variables show that in some cases there exist a strong correltion between varibales; also the accumaulation tends to be close to the edge.*
+
+
+*The graphical representation of the variables show that in some cases there exist a strong correlation between variables; also the accumaulation tends to be close to the edge.*
+
+
 
 ``` {r, echo=FALSE}
 library(MASS)
@@ -20,6 +27,8 @@ summary(Boston)
 
 
 *However, I will also plot the correlation matrix in order to explore the data in more details.*
+
+
 
 ``` {r, echo=FALSE}
 library(MASS)
@@ -35,10 +44,13 @@ corrplot(cor_matrix, method="circle", type="upper", cl.pos="b", tl.pos="d", tl.c
 
 
 
-*The correlogram is giving a more comprehensive picture of the coreelations between the variables. Therefore, one can clearly observe a negative correlation between indus/dis (proportion of non-retail business acres per town to weighted mean of distances to five Boston employment centres), nox/dis (nitrogen oxides concentration to weighted mean of distances to five Boston employment centres), age/dis (proportion of owner-occupied units built prior to 1940 to weighted mean of distances to five Boston employment centres) and lstat/medv (lower status of the population to median value of owner-occupied homes). Positive correlation is observed in indus/nox (proportion of non-retail business acres per town to nitrogen oxides concentration), rad/tax (index of accessibility to radial highways to full-value property-tax rate per \$10,000), nox/age. Having a closer look at the correlations, these seem to be logical.*
+*The correlogram is giving a more comprehensive picture of the correlation between the variables. Therefore, one can clearly observe a negative correlation between indus/dis (proportion of non-retail business acres per town to weighted mean of distances to five Boston employment centres), nox/dis (nitrogen oxides concentration to weighted mean of distances to five Boston employment centres), age/dis (proportion of owner-occupied units built prior to 1940 to weighted mean of distances to five Boston employment centres) and lstat/medv (lower status of the population to median value of owner-occupied homes). Positive correlation is observed in indus/nox (proportion of non-retail business acres per town to nitrogen oxides concentration), rad/tax (index of accessibility to radial highways to full-value property-tax rate per \$10,000), nox/age. Having a closer look at the correlations, these seem to be logical.*
 
 
-*However, in order to be able to classify the variable, it has to be standirdized so that  it is comparable.*
+
+*However, in order to be able to classify the variable, it has to be standirdized so that it is comparable.*
+
+
 
 ``` {r, echo=FALSE}
 library(MASS)
@@ -47,15 +59,18 @@ boston_scaled <- scale(Boston)
 summary(boston_scaled)
 class(boston_scaled)
 boston_scaled <- as.data.frame(boston_scaled)
-scaled_crim <- scale(boston_scaled)
+scaled_crim <- boston_scaled$crim
 bins <- quantile(scaled_crim)
+bins
 ```
 
 
 
-*Standardization of the variable have led to the fact that the range of the variable have decrease. Therefore, these standardized variables will be used in the further analysis*
+*Standardization of the variable has led to the fact that the range of the variable have decrease. Therefore, this standardized variable will be used in the further analysis*
 
-*Also, I will create yet another categoriacl variable crime that will be created from the continuous one crim. I will remove crim variable from the dataset so that it does not affect the further analysis*
+
+*Also, I will create yet another categorical variable crime that will be created from the continuous one crim. I will remove crim variable from the dataset so that it does not affect the further analysis*
+
 
 
 ``` {r, echo=FALSE}
@@ -64,15 +79,19 @@ data("Boston")
 
 boston_scaled <- scale(Boston)
 boston_scaled <- as.data.frame(boston_scaled)
-scaled_crim <- scale(boston_scaled)
+scaled_crim <- boston_scaled$crim
 bins <- quantile(scaled_crim)
-crime <- cut(scaled_crim,labels=c("low", "med_low", "med_high", "high"),  breaks = bins, include.lowest = TRUE)
+crime <- cut(scaled_crim, labels=c("low", "med_low", "med_high", "high"),  breaks = bins, include.lowest = TRUE)
 table(crime)
 boston_scaled <- dplyr::select(boston_scaled, -crim)
 boston_scaled <- data.frame(boston_scaled, crime)
 ```
 
+
+
 *After the necessary transformation, I will divide the data by the train (contain 80% of the data) and the test one (20% of the data) in order to proceed with the Linear Discrimination Analysis.*
+
+
 
 ``` {r, echo=FALSE}
 library(MASS)
@@ -80,7 +99,7 @@ data("Boston")
 
 boston_scaled <- scale(Boston)
 boston_scaled <- as.data.frame(boston_scaled)
-scaled_crim <- scale(boston_scaled)
+scaled_crim <- boston_scaled$crim
 bins <- quantile(scaled_crim)
 crime <- cut(scaled_crim,labels=c("low", "med_low", "med_high", "high"),  breaks = bins, include.lowest = TRUE)
 boston_scaled <- dplyr::select(boston_scaled, -crim)
@@ -93,7 +112,9 @@ test <- boston_scaled[-ind,]
 
 
 *Now, I will fit the linear discriminant analysis on the train set.I will use the categorical crime rate as the target variable and all the other variables in the dataset as predictor variables.*
-*LDA will fid a combination of the explanatory variable in such way so that it can separate the classes of the crime variable the best*
+*LDA will find a combination of the explanatory variable in such way so that it can separate the classes of the crime variable the best*
+
+
 
 
 ``` {r, echo=FALSE}
@@ -103,7 +124,7 @@ data("Boston")
 boston_scaled <- scale(Boston)
 class(boston_scaled)
 boston_scaled <- as.data.frame(boston_scaled)
-scaled_crim <- scale(boston_scaled)
+scaled_crim <- boston_scaled$crim
 bins <- quantile(scaled_crim)
 crime <- cut(scaled_crim,labels=c("low", "med_low", "med_high", "high"),  breaks = bins, include.lowest = TRUE)
 table(crime)
@@ -136,11 +157,14 @@ lda.arrows(lda.fit, myscale = 2)
 ```
 
 
-*In order to see the full picture of the obtained results, I have plotted a graph where different colours are resposible for different clsses of the variables. The arrow indicates the impact of each of the predictor variable in the model.*
+
+*In order to see the full picture of the obtained results, I have plotted a graph where different colours are resposible for different clsses of the variables. The arrow indicates the impact of each of the predictor variable in the model. From that, one can clearly see that rad (index of accessibility to radial highways) has the longest arrow and respectively impact.*
 
 
 
 *Now, I will remove the crime from the data and will make a prediction for the new dataset.*
+
+
 
 ``` {r, echo=FALSE}
 library(MASS)
@@ -148,7 +172,7 @@ data("Boston")
 
 boston_scaled <- scale(Boston)
 boston_scaled <- as.data.frame(boston_scaled)
-scaled_crim <- scale(boston_scaled)
+scaled_crim <- boston_scaled$crim
 bins <- quantile(scaled_crim)
 crime <- cut(scaled_crim,labels=c("low", "med_low", "med_high", "high"),  breaks = bins, include.lowest = TRUE)
 table(crime)
@@ -166,11 +190,14 @@ table(correct = correct_classes, predicted = lda.pred$class)
 ```
 
 
-*The data show that prediction for the high crime rates are correct ones. However, the prediction for the low and medium crime rates are not always correct*
+*The data show that prediction for the high  and low crime rates are correct ones. However, the prediction for the medium crime rates are not always correct*
 
 
 
-*Analysing the data from another angel, I will cluster observation and perform the k-means model that will asign cluster based on the distance between variables. Distance between the variablesis a measure of its similarity.*
+
+*Analysing the data from another angel, I will cluster observation and perform the k-means model that will asign cluster based on the distance between variables. Distance between the variablesis is a measure of its similarity.*
+
+
 
 ``` {r, echo=FALSE}
 library(MASS)
@@ -193,7 +220,11 @@ twcss <- sapply(1:k_max, function(k){kmeans(dist_eu, k)$tot.withinss})
 plot(1:k_max, twcss, type='b')
 ```
 
-* When performing k-means model, I have set the number of the clusters equal to 10. Howevr, from the plot (Within Cluster Sum of Squares), it obvious that 2 cluster will enough due to the fact that after two clusters, the value drops significantly. So, I will adjust the model.* 
+
+
+* When performing k-means model, I have set the number of the clusters equal to 10. Howevr, from the plot (Within Cluster Sum of Squares), it obvious that 2 clusters will enough due to the fact that after two clusters, the value drops significantly. So, I will adjust the model.* 
+
+
 
 ``` {r, echo=FALSE}
 library(MASS)
@@ -215,19 +246,24 @@ pairs(Boston1_scaled, col = km$cluster)
 ```
 
 
-*The plot is showing the scaled pairs that are lotted against each other*
+*The plot is showing the scaled pairs that are plotted against each other*
   
 
 
 * Also, I have decided to make a 3D plot I have fit the scaled train data that you used to fit the LDA.*
 
 
+
+
 ``` {r, echo=FALSE}
+
 library(MASS)
 data("Boston")
+
+
 boston_scaled <- scale(Boston)
 boston_scaled <- as.data.frame(boston_scaled)
-scaled_crim <- scale(boston_scaled)
+scaled_crim <- boston_scaled$crim
 bins <- quantile(scaled_crim)
 crime <- cut(scaled_crim,labels=c("low", "med_low", "med_high", "high"),  breaks = bins, include.lowest = TRUE)
 boston_scaled <- dplyr::select(boston_scaled, -crim)
@@ -240,7 +276,7 @@ test <- boston_scaled[-ind,]
 correct_classes <- test$crime
 test <- dplyr::select(test, -crime)
 lda.pred <- predict(lda.fit, newdata = test)
-table(correct = correct_classes, predicted = lda.pred$class)
+
 
 model_predictors <- dplyr::select(train, -crime)
 # check the dimensions
@@ -256,7 +292,10 @@ plot_ly(x = matrix_product$LD1, y = matrix_product$LD2, z = matrix_product$LD3, 
 ```
 
 
-*Also, here is another 3D plot where the color is defined by the clusters of the k-mean. It shows the same classes as in LDA model, howver, eithout classification by the crime rate.*
+
+*Also, here is another 3D plot where the color is defined by the clusters of the k-mean. It shows the same classes as in LDA model, however, without classification by the crime rate.*
+
+
 
 
 ``` {r, echo=FALSE}
@@ -264,7 +303,7 @@ library(MASS)
 data("Boston")
 boston_scaled <- scale(Boston)
 boston_scaled <- as.data.frame(boston_scaled)
-scaled_crim <- scale(boston_scaled)
+scaled_crim <- boston_scaled$crim
 bins <- quantile(scaled_crim)
 crime <- cut(scaled_crim,labels=c("low", "med_low", "med_high", "high"),  breaks = bins, include.lowest = TRUE)
 boston_scaled <- dplyr::select(boston_scaled, -crim)
@@ -277,9 +316,21 @@ test <- boston_scaled[-ind,]
 correct_classes <- test$crime
 test <- dplyr::select(test, -crime)
 lda.pred <- predict(lda.fit, newdata = test)
-table(correct = correct_classes, predicted = lda.pred$class)
+
 
 model_predictors <- dplyr::select(train, -crime)
+
+dist_eu <- dist(Boston)
+set.seed(123)
+km <-kmeans(dist_eu, centers = 15)
+
+k_max <- 10
+
+twcss <- sapply(1:k_max, function(k){kmeans(dist_eu, k)$tot.withinss})
+
+km <-kmeans(dist_eu, centers = 2)
+
+
 # matrix multiplication
 matrix_product <- as.matrix(model_predictors) %*% lda.fit$scaling
 matrix_product <- as.data.frame(matrix_product)
@@ -288,3 +339,49 @@ matrix_product <- as.data.frame(matrix_product)
 library(plotly)
 plot_ly(x = matrix_product$LD1, y = matrix_product$LD2, z = matrix_product$LD3, type= 'scatter3d', mode='markers', color = km$clusters)
 ```
+
+
+*As a bonus I have decide to perform k-means on the original Boston data. I have taken the clusters variable as the target class.*
+
+
+``` {r, echo=FALSE}
+
+library(MASS)
+data("Boston")
+
+boston_scaled <- scale(Boston)
+boston_scaled <- as.data.frame(boston_scaled)
+scaled_crim <- boston_scaled$crim
+bins <- quantile(scaled_crim)
+crime <- cut(scaled_crim,labels=c("low", "med_low", "med_high", "high"),  breaks = bins, include.lowest = TRUE)
+table(crime)
+boston_scaled <- dplyr::select(boston_scaled, -crim)
+boston_scaled <- data.frame(boston_scaled, crime)
+n <- nrow(boston_scaled)
+ind <- sample(n,  size = n * 0.8)
+train <- boston_scaled[ind,]
+test <- boston_scaled[-ind,]
+
+correct_classes <- test$crime
+test <- dplyr::select(test, -crime)
+
+km2 <-kmeans(dist_eu, centers = 3)
+
+lda.fit <- lda(km2$cluster ~ ., data = Boston)
+lda.fit
+
+
+lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "red", tex = 0.75, choices = c(1,2)){
+  heads <- coef(x)
+  arrows(x0 = 0, y0 = 0, 
+         x1 = myscale * heads[,choices[1]], 
+         y1 = myscale * heads[,choices[2]], col=color, length = arrow_heads)
+  text(myscale * heads[,choices], labels = row.names(heads), 
+       cex = tex, col=color, pos=3)
+}
+
+plot(lda.fit, dimen = 2, col = km2$cluster, pch = km2$cluster)
+lda.arrows(lda.fit, myscale = 1)
+```
+
+*Variable nox (nitrogen oxides concentration) seems to be the most influential.*
