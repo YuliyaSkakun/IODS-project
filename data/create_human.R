@@ -62,7 +62,7 @@ human <- select(human, one_of(keep))
 
 #Remove all rows with missing values
 human <- human[complete.cases(human), ]
-dim(human)
+
 
 #Remove the observations which relate to regions instead of countries
 human$Country
