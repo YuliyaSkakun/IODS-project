@@ -1,0 +1,169 @@
+
+# R Exercise 5. Dimensionality Reduction Techniques
+
+``` {r, warning=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+human <- read.csv(file='human.csv', header=TRUE, row.names=1, sep=",")
+str(human)
+dim(human)
+```
+
+
+*This week I will analyse the "human" data that contains 155 observations (countries) and 8 variables. These are: Life.Exp - life expectancy at birth; GNI - gross national income per capita; Mat.Mor -  maternal mortality ratio; Ado.Birth -adolescent birth rate; Edu.Exp - Expected years of schooling  ; Parli.F - Percetange of female representatives in parliament; Labo.FM - ratio of proportions of females/males in labour force; eduexp - expected years of schooling; Edu2.FM - ratio of proportions of females/males with at least secondary education.*
+
+
+
+``` {r, warning=FALSE}
+setwd("/Users/skakunyuliya/IODS-project/data")
+human <- read.csv(file='human.csv', header=TRUE, row.names=1, sep=",")
+
+summary(human)
+library(GGally)
+
+ggpairs(human)
+```
+
+
+*Graphical overview of the data shows that all variables but GNI and mat. mortality are normaly distributed. Life expectancy and maternal mortality rate are highly negatively correlated while life expectancy and edcuational expenses are positively. These relationship do seem to be logical. In order to better analyse the correlation, I will build the correlation plot*
+
+
+
+``` {r, warning=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+human <- read.csv(file='human.csv', header=TRUE, row.names=1, sep=",")
+library(corrplot)
+corh <- cor(human) 
+corrplot(corh, method="circle", type="upper", cl.pos="b", tl.pos="d", tl.cex=0.6)
+```
+
+
+
+*Correlation plot confirms a positive relation between adolescent birth rate and maternal mortality rate, life expectancy and educational expences. It shows negative relation in between maternal mortality rate and life expectancy described above*
+
+
+
+*In order to see what variable do have the highest impact (have the biggest variance), I will perform principal component analysis (PCA) on the non standardized human data.*
+
+
+
+``` {r, warning=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+human <- read.csv(file='human.csv', header=TRUE, row.names=1, sep=",")
+
+pca <- prcomp(human)
+summary(pca)
+
+biplot(pca, cex=c(0.8,1),col=c("blue","deeppink2"), choices = 1:2)
+```
+
+
+
+*The summary of the model does not give an explanation of the data due to the fact that the data is not standardized. Therefore, biplot shows that the biggest amount of variance is captured solely by GNI*
+
+
+
+*Then, I will perform the PCA again but on the stardardized data* 
+
+
+
+``` {r, warning=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+human <- read.csv(file='human.csv', header=TRUE, row.names=1, sep=",")
+
+human_std <- scale(human)
+
+pca_human <- prcomp(human_std)
+summary(pca_human)
+
+
+biplot(pca_human, cex=c(0.8,1),col=c("grey40","deeppink2"), choices = 1:2)
+```
+
+*The data shows that PC1 explains 44.7% of the variation in the model; PC2 17% and PC3 12.5%. The first dimension, PC1, can correspond to GNI, Life.Exp, Edu.Exp, Edu2.FM, Ado.Birth, and Mat.Mor. PC2, can be reflected by Parli.F and Labo.FM. Also, both PC1 and PC2 explained approximately 70% of the variation in the data.*
+
+
+
+
+*The second part of the analysis will be performed on the tea dataset from the package Factominer.Data contains infromatin on 300 observations and 36 variables. However, I have modifyied the data and have left the variables that are the most relevant for the analysis scope. Terefore, the transformed dtata still contains 300 obervations but 8 variables( refering to the tea preferences of people)*
+
+
+
+``` {r, warning=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+
+
+library(FactoMineR)
+library(tidyr)
+library(ggplot2)
+library(dplyr)
+
+data("tea")
+str(tea)
+keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
+
+tea_time <- select(tea, one_of(keep_columns) )
+
+summary(tea_time)
+str(tea_time)
+```
+
+
+
+*Plotting the graph of the main variables, I can conclude that majority prefer to drink Earl Grey tea bag tea alone without lemon or anything at the chain store. There is a half split of those who prefer or not to add sugart to their tea*
+
+
+
+
+``` {r, warning=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+library(FactoMineR)
+library(tidyr)
+library(ggplot2)
+library(dplyr)
+
+data("tea")
+keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
+
+tea_time <- select(tea, one_of(keep_columns) )
+g <- gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") 
+g+geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+```
+
+
+
+*Now, I will preform the Multiple Correspondence Analysis in order to try to detect some structure in the data* 
+
+
+``` {r, warning=FALSE}
+
+setwd("/Users/skakunyuliya/IODS-project/data")
+library(FactoMineR)
+library(tidyr)
+library(ggplot2)
+library(dplyr)
+
+data("tea")
+keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
+
+tea_time <- select(tea, one_of(keep_columns) )
+
+mca <- MCA(tea_time, graph = FALSE)
+summary(mca)
+
+library("devtools")
+library("factoextra")
+fviz_screeplot(mca)
+plot(mca, invisible=c("ind"), habillage='quali')
+fviz_mca_biplot(mca) +theme_minimal()
+
+```
+
+
+
+*The MCA result is showing that in the first dimension, 15% of the variation is explained in the data while the second and thrid dimensions explain 14% and 12%, respectively. The cumulative variance of three dimensions is 41.4%. Later there is a data on the indiiduals' relation to the dimensions (attitude towards tea quality); combination of the health and quality related variables; and categories of the variables that is associated with health. The biplot shows these interrelations graphically*
